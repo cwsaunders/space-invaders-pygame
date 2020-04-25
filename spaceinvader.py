@@ -12,6 +12,15 @@ pygame.display.set_caption("Space Invaders")
 icon = pygame.image.load('alien.png')
 pygame.display.set_icon(icon)
 
+# Player
+playerImg = pygame.image.load('space-invaders.png')
+playerX = 370
+playerY = 480
+
+def player():
+    window.blit(playerImg,(playerX,playerY))
+
+
 # Game loop
 running = True
 while running:
@@ -20,4 +29,5 @@ while running:
             running = False
     # Background: (RGB)
     window.fill((0, 255, 255))
+    player()
     pygame.display.update()
