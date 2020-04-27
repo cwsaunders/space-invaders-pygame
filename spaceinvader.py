@@ -1,5 +1,6 @@
 import pygame
 import random
+import math
 
 
 def player(img,x,y):
@@ -12,6 +13,14 @@ def fire_bullet(img,x,y):
     global bullet_state
     bullet_state = 'fire'
     window.blit(img,(x+16,y+10))
+
+def isCollision(enemyX,enemyY,bulletX,bulletY):
+    distance = math.sqrt((math.pow(enemyX-bulletX,2)) + (math.pow(enemyY-bulletY,2)))
+    if distance < 27:
+        return True
+    else:
+        return False
+
 
 
 pygame.init()
@@ -35,7 +44,7 @@ playerY = 480
 playerX_change = 0
 # Enemy:
 enemyImg = pygame.image.load('skull.png')
-enemyX = random.randint(0,800)
+enemyX = random.randint(0,735)
 enemyY = random.randint(50,150)
 enemyX_change = 2
 enemyY_change = 40
@@ -48,6 +57,9 @@ bulletY_change = 40
 # Ready - you cannot see bullet on screen
 # Fire - bullet is moving
 bullet_state = 'ready'
+
+# Other variables
+score = 0
 
 
 # Game loop
@@ -108,6 +120,19 @@ while running:
     if bullet_state == 'fire':
         fire_bullet(bulletImg,bulletX,bulletY)
         bulletY -= bulletY_change
+
+
+    # Collision
+    collision = isCollision(enemyX,enemyY,bulletX,bulletY)
+    if collision:
+        bulletY = 480
+        bullet_state = 'ready'
+        score += 1
+        print(score)
+        enemyX = random.randint(0,735)
+        enemyY = random.randint(50,150)
+
+
 
     # Update original background
     pygame.display.update()
