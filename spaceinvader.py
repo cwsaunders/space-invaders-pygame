@@ -43,11 +43,19 @@ playerX = 370
 playerY = 480
 playerX_change = 0
 # Enemy:
-enemyImg = pygame.image.load('skull.png')
-enemyX = random.randint(0,735)
-enemyY = random.randint(50,150)
-enemyX_change = 2
-enemyY_change = 40
+enemyImg = []
+enemyX = []
+enemyY = []
+enemyX_change = []
+enemyY_change = []
+num_of_enemies = 6
+
+for i in range(num_of_enemies):
+    enemyImg.append(pygame.image.load('skull.png'))
+    enemyX.append(random.randint(0,735))
+    enemyY.append(random.randint(50,150))
+    enemyX_change.append(2)
+    enemyY_change.append(40)
 # Bullet
 bulletImg = pygame.image.load('bullet.png')
 bulletX = 0
@@ -100,17 +108,29 @@ while running:
 
     # Enemy:
     # Movement
-    enemyX += enemyX_change
+    for i in range(num_of_enemies):
+        enemyX[i] += enemyX_change[i]
 
-    # Checking for boundaries of enemy
-    if enemyX <= 0:
-        enemyX_change = 2
-        enemyY += enemyY_change
-    elif enemyX >= 736:
-        enemyX_change = -2
-        enemyY += enemyY_change
-    # Enemy function
-    enemy(enemyImg,enemyX,enemyY)
+        # Checking for boundaries of enemy
+        if enemyX[i] <= 0:
+            enemyX_change[i] = 2
+            enemyY[i] += enemyY_change[i]
+        elif enemyX[i] >= 736:
+            enemyX_change[i] = -2
+            enemyY[i] += enemyY_change[i]
+
+                # Collision
+        collision = isCollision(enemyX[i],enemyY[i],bulletX,bulletY)
+        if collision:
+            bulletY = 480
+            bullet_state = 'ready'
+            score += 1
+            print(score)
+            enemyX[i] = random.randint(0,735)
+            enemyY[i] = random.randint(50,150)
+        # Enemy function
+        enemy(enemyImg[i],enemyX[i],enemyY[i])
+
 
     # Bullet:
     # Movement
@@ -122,15 +142,7 @@ while running:
         bulletY -= bulletY_change
 
 
-    # Collision
-    collision = isCollision(enemyX,enemyY,bulletX,bulletY)
-    if collision:
-        bulletY = 480
-        bullet_state = 'ready'
-        score += 1
-        print(score)
-        enemyX = random.randint(0,735)
-        enemyY = random.randint(50,150)
+
 
 
 
