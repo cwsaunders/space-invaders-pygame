@@ -7,6 +7,10 @@ from pygame import mixer
 def player(img,x,y):
     window.blit(img,(x,y))
 
+def game_over_text():
+    over_text = over_font.render("GAME OVER",True, (255,255,255))
+    window.blit(over_text, (200, 250))
+
 def enemy(img,x,y):
     window.blit(img,(x,y))
 
@@ -79,6 +83,9 @@ font = pygame.font.Font('freesansbold.ttf',32)
 textX = 10
 textY = 10
 
+# Game over text
+over_font = pygame.font.Font('freesansbold.ttf',64)
+
 # Game loop
 running = True
 while running:
@@ -121,6 +128,13 @@ while running:
     # Enemy:
     # Movement
     for i in range(num_of_enemies):
+        #Game over
+        if enemyY[i] > 440:
+            for j in range(num_of_enemies):
+                enemyY[j] = 2000
+            game_over_text()
+            break
+
         enemyX[i] += enemyX_change[i]
 
         # Checking for boundaries of enemy
