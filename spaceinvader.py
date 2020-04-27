@@ -1,6 +1,7 @@
 import pygame
 import random
 import math
+from pygame import mixer
 
 
 def player(img,x,y):
@@ -38,6 +39,9 @@ icon = pygame.image.load('alien.png')
 pygame.display.set_icon(icon)
 # Background
 background = pygame.image.load('space background.jpg')
+# Background Sound
+mixer.music.load('background.wav')
+mixer.music.play(-1)
 
 # Player
 playerImg = pygame.image.load('space-invaders.png')
@@ -93,8 +97,11 @@ while running:
                 playerX_change = 4
             if event.key == pygame.K_SPACE:
                 if bullet_state == 'ready':
+                    bullet_Sound = mixer.Sound('laser.wav')
+                    bullet_Sound.play()
                     bulletX = playerX
                     fire_bullet(bulletImg,bulletX,bulletY)
+
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 playerX_change = 0
@@ -127,6 +134,8 @@ while running:
                 # Collision
         collision = isCollision(enemyX[i],enemyY[i],bulletX,bulletY)
         if collision:
+            explosion_Sound = mixer.Sound('explosion.wav')
+            explosion_Sound.play()
             bulletY = 480
             bullet_state = 'ready'
             score_value += 1
