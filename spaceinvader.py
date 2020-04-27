@@ -21,7 +21,9 @@ def isCollision(enemyX,enemyY,bulletX,bulletY):
     else:
         return False
 
-
+def show_score(x,y):
+    score = font.render(f"Score: {str(score_value)}",True, (255,255,255))
+    window.blit(score, (x, y))
 
 pygame.init()
 
@@ -66,9 +68,12 @@ bulletY_change = 40
 # Fire - bullet is moving
 bullet_state = 'ready'
 
-# Other variables
-score = 0
+# Score
+score_value = 0
+font = pygame.font.Font('freesansbold.ttf',32)
 
+textX = 10
+textY = 10
 
 # Game loop
 running = True
@@ -124,8 +129,7 @@ while running:
         if collision:
             bulletY = 480
             bullet_state = 'ready'
-            score += 1
-            print(score)
+            score_value += 1
             enemyX[i] = random.randint(0,735)
             enemyY[i] = random.randint(50,150)
         # Enemy function
@@ -140,6 +144,7 @@ while running:
     if bullet_state == 'fire':
         fire_bullet(bulletImg,bulletX,bulletY)
         bulletY -= bulletY_change
+    show_score(textX,textY)
 
 
 
